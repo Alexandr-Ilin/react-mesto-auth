@@ -1,22 +1,18 @@
-.header {
+.header__with-logo {
   width: 100%;
-  max-width: 880px;
-  border-bottom: 1px solid rgba(84, 84, 84, .7);
-  padding-bottom: 40px;
   display: flex;
   justify-content: space-between;
+  align-items: flex-end;
 }
 
 @media screen and (max-width: 940px) {
-  .header {
-    padding-bottom: 30.6px;
+  .header__with-logo {
     max-width: 581px;
   }
 }
 
 @media screen and (max-width: 641px) {
-  .header {
+  .header__with-logo {
     width: 320px;
-    flex-direction: column-reverse;
   }
 }

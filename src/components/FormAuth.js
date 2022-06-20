@@ -2,7 +2,6 @@ import React from "react";
 
 function FormAuth({title, children, onSubmit, buttonText}) {
     return (
-      
         <div className="auth__form-container">
           <h2 className="auth__form-title">{title}</h2>
           <form 
@@ -11,7 +10,6 @@ function FormAuth({title, children, onSubmit, buttonText}) {
           >
             {children}
             <button className="form-auth__submit-button" type="submit">{buttonText}</button>
-
           </form> 
         </div>
     )

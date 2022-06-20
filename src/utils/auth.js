@@ -2,17 +2,14 @@ const BASE_URL = "https://auth.nomoreparties.co";
 
 const checkResponse = (res) => {
     if (res.ok) {
-      console.log('res_ok', res, res.json)
       return res.json();
     }
   
     return res.json()
     .then((err) => {
-      console.log('res_false', err.message)
       throw err;
-      
-    });
-  };
+    })
+}
 
 export const register = ({password, email}) => {
   console.log(password, email)

@@ -10,9 +10,7 @@ function Login({handleLogin}) {
 
   function handleSubmit(e) {
     e.preventDefault()
-    console.log('login')
     handleLogin(formParams)
-
   } 
 
   function handleChange(e) {
@@ -25,36 +23,34 @@ function Login({handleLogin}) {
 
   return (
     <section className="auth">
-    <FormAuth
-      title={'Вход'}
-      onSubmit={handleSubmit}
-      buttonText={'Войти'}
-    >
+      <FormAuth
+        title={'Вход'}
+        onSubmit={handleSubmit}
+        buttonText={'Войти'}
+      >
+        <input 
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={formParams.email}
+          onChange={handleChange}
+          className="form-auth__input"
+          maxLength="40"
+          required
+        />
+
       <input 
-        type="email"
-        name="email"
-        placeholder="Email"
-        value={formParams.email}
-        onChange={handleChange}
-        className="form-auth__input"
-        maxLength="40"
-        required
-       />
-
-     <input 
-        type="password"
-        name="password"
-        placeholder="Пароль"
-        value={formParams.password}
-        onChange={handleChange}
-        className="form-auth__input"
-        minLength= "5"
-        maxLength="10"
-        required
-       />
-
-    </FormAuth>
-    
+          type="password"
+          name="password"
+          placeholder="Пароль"
+          value={formParams.password}
+          onChange={handleChange}
+          className="form-auth__input"
+          minLength= "5"
+          maxLength="10"
+          required
+        />
+      </FormAuth>
     </section>
   )
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import Header from './Header'
 import Main from './Main'
 import Footer from './Footer'
@@ -50,6 +50,10 @@ function App() {
         console.log(err);
       })
     
+    
+  },[])
+
+  React.useEffect(() => {
     if (localStorage.getItem('jwt')) {
       const jwt = localStorage.getItem('jwt')
       auth.tokenCheck(jwt)
@@ -63,7 +67,7 @@ function App() {
           history.push('/sign-in')
         })
     }
-  },[])
+  },[history])
 
   //открытие/закрытие попапов
   function closeAllPopups() {
@@ -181,8 +185,8 @@ function App() {
       history.push('/sign-in');
       handleInfoToolTipPopupOpen(true)
     })
-    .catch((data) => {
-      console.log(data)
+    .catch((err) => {
+      console.log(err)
       handleInfoToolTipPopupOpen(false)
     })
   }
@@ -190,18 +194,15 @@ function App() {
   function handleLogin ({ email, password }) {
     return auth.authorize(password, email)
         .then((data) => {
-          console.log(data, "data")
           if (data.token) {
             localStorage.setItem('jwt', data.token);
-            //tokenCheck();
-            console.log('data', data)
             setEmail(email)
             setLoggedIn(true)
             history.push('/')
           }
         })
-        .catch((data) => {
-          console.log(data)
+        .catch((err) => {
+          console.log(err)
           handleInfoToolTipPopupOpen(false)
         })
   }
@@ -219,18 +220,42 @@ function App() {
     <div className="page">
     
       <Switch>
-     
+
+        <Route exact path='/sign-in'>
+          < Header 
+            headerLinkPath='/sign-up'
+            headerLinkText='Регистрация' 
+          />
+         
+          < Login
+            handleLogin={handleLogin}
+          />
+        </Route>
+        
+        <Route exact path='/sign-up'>
+
+          < Header 
+            headerLinkPath='/sign-in'
+            headerLinkText='Авторизация' 
+          />
+
+          < Register
+            handleRegister={handleRegister} 
+          />
+        </Route>
+
+        
         <ProtectedRoute
           exact path='/'
           loggedIn={loggedIn}
         >
-        < Header
-          loggedIn={loggedIn}
-          email={email}
-          buttonText={'Выйти'}
-          signOut={handleSignOut}
-          
-        />
+          < Header
+            loggedIn={loggedIn}
+            email={email}
+            buttonText={'Выйти'}
+            signOut={handleSignOut}
+            
+          />
 
           <Main 
             onEditAvatar={handleEditAvatarClick}
@@ -244,42 +269,6 @@ function App() {
             
           < Footer />
         </ProtectedRoute>
-
-         
-        
-        <Route path="/sign-up">
-
-          < Header 
-            headerLinkPath='/sign-in'
-            headerLinkText='Авторизация' 
-          />
-
-          < Register
-            handleRegister={handleRegister} 
-          />
-        </Route>
-
-        <Route path="/sign-in">
-          < Header 
-            headerLinkPath='/sign-up'
-            headerLinkText='Регистрация' 
-          />
-         
-          < Login
-            handleLogin={handleLogin}
-          />
-          
-        </Route>
-        
-
-        {/* Пользователь открыл приложение */}
-        <Route>
-          {loggedIn ? (
-            <Redirect to="/" />
-          ) : (
-            <Redirect to="/sign-in" />
-          )}
-        </Route>
 
       </Switch>
       
