@@ -19,7 +19,7 @@ function Header({loggedIn, headerLinkPath, headerLinkText, email, buttonText, si
       </div>
 
       {loggedIn && (
-        <div className={`header__context-container ${isOpenMenu ? 'header__context-container_type_menu' : ''}`}>
+        <div className={`header__context-container ${isOpenMenu ? 'header__context-container_visible' : ''}`}>
           <p className='header__email'>{email}</p>
           {loggedIn ? <button type="button" onClick={signOut} className='header__button-signout'>{buttonText}</button> : <Link className="header__link" to={headerLinkPath}>{headerLinkText}</Link>}
         </div>
