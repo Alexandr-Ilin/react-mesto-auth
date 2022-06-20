@@ -271,8 +271,6 @@ function App() {
         </ProtectedRoute>
 
       </Switch>
-      
-      
 
       <EditAvatarPopup 
         isOpen={isEditAvatarPopupOpen} 

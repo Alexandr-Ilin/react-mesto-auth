@@ -12,8 +12,6 @@ const checkResponse = (res) => {
 }
 
 export const register = ({password, email}) => {
-  console.log(password, email)
-  debugger
   return fetch (`${BASE_URL}/signup`, {
     method: 'POST',
     headers: {
