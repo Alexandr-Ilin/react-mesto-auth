@@ -1,29 +1,22 @@
 import React from 'react';
 import PopupWithForm from './PopupWithForm';
+import { useForm } from '../utils/useForm'
 
 function AddPlacePopup({isOpen, onClose, onAddPlace, isRenderLoading}) {
 
-const [values, setValues] = React.useState({name: '' ,link:''})
+  const data = useForm({name: '' ,link:''})
 
-React.useEffect(() => {
-    setValues({name: '', link:''})
+  React.useEffect(() => {
+    data.setValues({name: '', link:''})
   }, [isOpen])
 
-const handleChange = (event) => { 
-  const { name, value } = event.target
-    setValues((prev) => ({ 
-      ...prev, 
-      [name]: value
-  })) 
-} 
-
-function handleSubmit(e) {
-  e.preventDefault()
+  function handleSubmit(e) {
+    e.preventDefault()
     onAddPlace({
-      name: values.name,
-      link: values.link 
+      name: data.values.name,
+      link: data.values.link 
     })
-}
+  }
 
   return (
     <PopupWithForm
@@ -33,9 +26,9 @@ function handleSubmit(e) {
       onClose={onClose}
       buttonText={isRenderLoading ? 'Сохранение...' : 'Сохранить'}
       onSubmit={handleSubmit}>
-      <input value={values.name || ''} onChange={handleChange} required minLength="2" maxLength="30" type="text" className="form__item form__item_type_place" name="name" placeholder="Название"/>
+      <input value={data.values.name || ''} onChange={data.handleChange} required minLength="2" maxLength="30" type="text" className="form__item form__item_type_place" name="name" placeholder="Название"/>
       <span className="form__error-message form__error-message_type_name"></span>
-      <input  value={values.link || ''} onChange={handleChange} required type="url" className="form__item form__item_type_link" name="link" placeholder="Ссылка на картинку"/>
+      <input  value={data.values.link || ''} onChange={data.handleChange} required type="url" className="form__item form__item_type_link" name="link" placeholder="Ссылка на картинку"/>
       <span className="form__error-message form__error-message_type_link"></span>
     </PopupWithForm>
   )
