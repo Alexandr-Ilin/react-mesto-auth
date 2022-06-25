@@ -7,6 +7,13 @@ function EditProfilePopup({isOpen, onClose, onUpdateUser, isRenderLoading}) {
   const currentUser = React.useContext(CurrentUserContext);
 
   const data = useForm({user: currentUser.name , character: currentUser.about})
+
+  React.useEffect(() => {
+    data.setValues({
+      user: currentUser.name, 
+      character: currentUser.about
+    })
+  },[isOpen])
    
   function handleSubmit(e) {
     // Запрещаем браузеру переходить по адресу формы

@@ -4,7 +4,7 @@ import { useForm } from '../utils/useForm'
 
 function AddPlacePopup({isOpen, onClose, onAddPlace, isRenderLoading}) {
 
-  const data = useForm({name: '' ,link:''})
+  const data = useForm({name: '', link:''})
 
   React.useEffect(() => {
     data.setValues({name: '', link:''})
