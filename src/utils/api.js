@@ -98,9 +98,9 @@ class Api {
 }
 
 export const api = new Api({
-  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-39',
+  baseUrl: 'https://api.ilin.nomoredomains.sbs',
   headers: {
-    authorization: 'a251447a-ca8d-48d6-88cb-4cedc8f5baae',
+    // authorization: 'a251447a-ca8d-48d6-88cb-4cedc8f5baae',
     'Content-Type': 'application/json'
   }
 });
