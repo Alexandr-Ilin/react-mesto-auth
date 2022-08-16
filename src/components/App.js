@@ -34,11 +34,17 @@ function App() {
   const history = useHistory()
 
   React.useEffect(() => {
-    api.getUserData()
+    if (loggedIn){ 
+      console.log('loggedIn', loggedIn)
+      api.getUserData()
       .then((res) => {
-        setCurrentUser(res)
+        console.log(res, 'resultUser')
+        setCurrentUser(res.data)
+        setEmail(res.data.email);
+        history.push('/');
       })
       .catch((err) => {
+        console.log('unautoriz')
         console.log(err);
       })
 
@@ -48,26 +54,28 @@ function App() {
     })
       .catch((err) => {
         console.log(err);
-      })
+      })}
     
     
-  },[])
+  },[history, loggedIn])
 
-  React.useEffect(() => {
-    if (localStorage.getItem('jwt')) {
-      const jwt = localStorage.getItem('jwt')
-      auth.checkToken(jwt)
-        .then((res) => {
-          setEmail(res.data.email)
-          setLoggedIn(true)
-          history.push('/')
-        })
-        .catch((err) => {
-          console.log(err)
-          history.push('/sign-in')
-        })
-    }
-  },[history])
+  // React.useEffect(() => {
+  //   if (localStorage.getItem('jwt')) {
+  //     const jwt = localStorage.getItem('jwt')
+  //     auth.checkToken(jwt)
+  //       .then((res) => {
+  //         console.log('здесь')
+  //         setEmail(res.data.email)
+  //         setLoggedIn(true)
+  //         history.push('/')
+  //       })
+  //       .catch((err) => {
+  //         console.log('нездесь')
+  //         console.log(err)
+  //         history.push('/sign-in')
+  //       })
+  //   }
+  // },[history])
 
   //открытие/закрытие попапов
   function closeAllPopups() {
@@ -105,7 +113,7 @@ function App() {
     setRenderLoading(true)
     api.changeUserData({ user, character }) 
       .then((data) => {
-         setCurrentUser(data)
+         setCurrentUser(data.data)
          closeAllPopups()
     })
       .catch((err) => {
@@ -120,7 +128,8 @@ function App() {
     setRenderLoading(true)
     api.chengeAvatar(avatar)
       .then((data) => {
-        setCurrentUser({...currentUser, avatar: data.avatar})
+        console.log(data, 'avatar')
+        setCurrentUser({...currentUser, avatar: data.data.avatar})
         closeAllPopups()
       })
       .catch((err) => {
@@ -133,7 +142,7 @@ function App() {
 
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
-    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    const isLiked = card.likes.some(i => i === currentUser._id);
     // Отправляем запрос в API и получаем обновлённые данные карточки
     api.changeLikeCardStatus(card._id, !isLiked)
       .then((newCard) => {
@@ -193,27 +202,31 @@ function App() {
 
   function handleLogin ({ email, password }) {
     return auth.authorize(password, email)
-        .then((data) => {
-          if (data.token) {
-            localStorage.setItem('jwt', data.token);
+        .then((res) => {
+          console.log(res, 'datalogin')
+            console.log(res)
+            console.log('вошел')
             setEmail(email)
             setLoggedIn(true)
             history.push('/')
-          }
         })
         .catch((err) => {
-          console.log(err)
+          console.log(err, '0err')
           handleInfoToolTipPopupOpen(false)
         })
   }
 
   function handleSignOut() {
-    localStorage.removeItem('jwt')
-    setEmail('')
-    setLoggedIn(false)
-    history.push('/sign-in')
+    auth.exitUserProfile()
+      .then(res => {
+          setLoggedIn(false);
+          setEmail('');
+          history.push('/sign-in');
+      })
+      .catch(err => {
+        console.log(err);
+      })
   }
-
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
