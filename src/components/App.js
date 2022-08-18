@@ -34,19 +34,24 @@ function App() {
   const history = useHistory()
 
   React.useEffect(() => {
-    if (loggedIn){ 
-      console.log('loggedIn', loggedIn)
-      api.getUserData()
-      .then((res) => {
-        console.log(res, 'resultUser')
-        setCurrentUser(res.data)
-        setEmail(res.data.email);
-        history.push('/');
-      })
-      .catch((err) => {
-        console.log('unautoriz')
-        console.log(err);
-      })
+    console.log(document.cookie, 'cookie1')
+   },[history])
+
+  React.useEffect(() => {
+    
+    console.log('loggedIn', loggedIn)
+    api.getUserData()
+    .then((res) => {
+      console.log(res, 'resultUser')
+      setLoggedIn(true);
+      setCurrentUser(res.data)
+      setEmail(res.data.email);
+      history.push('/');
+    })
+    .catch((err) => {
+      console.log('unautoriz')
+      console.log(err);
+    })
 
     api.getInitialCards()
       .then((res) => {
@@ -54,9 +59,9 @@ function App() {
     })
       .catch((err) => {
         console.log(err);
-      })}
-    
-    
+      })
+
+
   },[history, loggedIn])
 
   // React.useEffect(() => {
@@ -94,10 +99,10 @@ function App() {
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true)
   }
-    
+
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true);
-  }  
+  }
 
   function handleAddPlaceClick() {
     setIsAddPlacePopupOpen(true)
@@ -111,7 +116,7 @@ function App() {
   //функции обновления данных
   function handleUpdateUser({user, character}) {
     setRenderLoading(true)
-    api.changeUserData({ user, character }) 
+    api.changeUserData({ user, character })
       .then((data) => {
          setCurrentUser(data.data)
          closeAllPopups()
@@ -123,7 +128,7 @@ function App() {
         setRenderLoading(false);
       })
   }
-  
+
   function handleUpdateAvatar(avatar) {
     setRenderLoading(true)
     api.chengeAvatar(avatar)
@@ -151,7 +156,7 @@ function App() {
       .catch((err) => {
         console.log(err);
       })
-  } 
+  }
 
   function handleCardDelete(card) {
     setRenderLoading(true)
@@ -224,40 +229,43 @@ function App() {
           history.push('/sign-in');
       })
       .catch(err => {
-        console.log(err);
+         console.log(err);
       })
   }
+  // function handleSignOut() {
+  //    console.log('err');
+  // }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
     <div className="page">
-    
+
       <Switch>
 
         <Route exact path='/sign-in'>
-          < Header 
+          < Header
             headerLinkPath='/sign-up'
-            headerLinkText='Регистрация' 
+            headerLinkText='Регистрация'
           />
-         
+
           < Login
             handleLogin={handleLogin}
           />
         </Route>
-        
+
         <Route exact path='/sign-up'>
 
-          < Header 
+          < Header
             headerLinkPath='/sign-in'
-            headerLinkText='Авторизация' 
+            headerLinkText='Авторизация'
           />
 
           < Register
-            handleRegister={handleRegister} 
+            handleRegister={handleRegister}
           />
         </Route>
 
-        
+
         <ProtectedRoute
           exact path='/'
           loggedIn={loggedIn}
@@ -267,10 +275,10 @@ function App() {
             email={email}
             buttonText={'Выйти'}
             signOut={handleSignOut}
-            
+
           />
 
-          <Main 
+          <Main
             onEditAvatar={handleEditAvatarClick}
             onEditProfile={handleEditProfileClick}
             onAddPlace={handleAddPlaceClick}
@@ -279,27 +287,27 @@ function App() {
             onCardLike={handleCardLike}
             onCardDelete={handleDeletePlaceClick}
           />
-            
+
           < Footer />
         </ProtectedRoute>
 
       </Switch>
 
-      <EditAvatarPopup 
-        isOpen={isEditAvatarPopupOpen} 
+      <EditAvatarPopup
+        isOpen={isEditAvatarPopupOpen}
         onClose={closeAllPopups}
         onUpdateAvatar={handleUpdateAvatar}
         isRenderLoading={renderLoading}
       />
 
-      <EditProfilePopup 
-        isOpen={isEditProfilePopupOpen} 
-        onClose={closeAllPopups} 
+      <EditProfilePopup
+        isOpen={isEditProfilePopupOpen}
+        onClose={closeAllPopups}
         onUpdateUser={handleUpdateUser}
         isRenderLoading={renderLoading}
       />
-      
-      <AddPlacePopup 
+
+      <AddPlacePopup
         isOpen={isAddPlacePopupOpen}
         onClose={closeAllPopups}
         onAddPlace={handleAddPlaceSubmit}
@@ -330,4 +338,3 @@ function App() {
 }
 
 export default App;
- 

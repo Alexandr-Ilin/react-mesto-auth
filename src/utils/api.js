@@ -1,3 +1,5 @@
+import { BASE_URL } from "./consts";
+
 class Api {
   constructor({
     baseUrl,
@@ -109,7 +111,7 @@ class Api {
 
 export const api = new Api({
   // baseUrl: 'https://api.ilin.nomoredomains.sbs',
-  baseUrl: 'http://localhost:3000',
+  baseUrl: BASE_URL,
   headers: {
     // authorization: 'a251447a-ca8d-48d6-88cb-4cedc8f5baae',
     'Content-Type': 'application/json'

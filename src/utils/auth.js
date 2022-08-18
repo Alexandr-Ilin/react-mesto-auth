@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:3000";
+import { BASE_URL } from "./consts";
 
 const checkResponse = (res) => {
     if (res.ok) {
@@ -18,6 +18,7 @@ export const register = ({password, email}) => {
     method: 'POST',
     credentials: 'include',
     headers: {
+      'Accept': 'application/json',
       "Content-Type": "application/json"
     },
     body: JSON.stringify({password, email})
@@ -47,3 +48,15 @@ export const authorize = (password, email) => {
 //     }})
 //   .then(checkResponse)
 // }
+
+export const exitUserProfile = (token) => {
+  return fetch(`${BASE_URL}/exit`,{
+    method: 'DELETE',
+    credentials: 'include',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    }
+  })
+  .then(checkResponse)
+}
