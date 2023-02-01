@@ -98,7 +98,7 @@ class Api {
 }
 
 export const api = new Api({
-  baseUrl: 'https://api.ilin.nomoredomains.sbs',
+  baseUrl: 'https://auth.nomoreparties.co',
   headers: {
     // authorization: 'a251447a-ca8d-48d6-88cb-4cedc8f5baae',
     'Content-Type': 'application/json'
